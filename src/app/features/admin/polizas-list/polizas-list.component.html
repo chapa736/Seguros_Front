@@ -1,0 +1,213 @@
+<div class="polizas-container">
+  <div class="header-section">
+    <div class="header-content">
+      <div>
+        <h1>Gestión de Pólizas</h1>
+        <p>Administra y crea nuevas pólizas para los clientes</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-filters" (click)="toggleFiltros()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+          </svg>
+          <span>Filtros</span>
+        </button>
+        <a routerLink="/admin/polizas/crear" class="btn btn-primary btn-create">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Asociar Póliza</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de Filtros -->
+  <div class="filters-panel" *ngIf="mostrarFiltros">
+    <div class="filters-content">
+      <h3>Filtrar Pólizas</h3>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label for="filtroId">ID de Póliza</label>
+          <input
+            type="number"
+            id="filtroId"
+            [(ngModel)]="filtroId"
+            class="filter-input"
+            placeholder="Ej: 123"
+            min="1"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroCliente">Cliente</label>
+          <select
+            id="filtroCliente"
+            [(ngModel)]="filtroCliente"
+            (ngModelChange)="onFiltroClienteChange($event)"
+            class="filter-select"
+          >
+            <option [ngValue]="null">Todos los clientes</option>
+            <option *ngFor="let cliente of clientes" [ngValue]="cliente.id">
+              {{ cliente.nombreCompleto }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroTipo">Tipo de Póliza</label>
+          <select
+            id="filtroTipo"
+            [(ngModel)]="filtroTipo"
+            (ngModelChange)="onFiltroTipoChange($event)"
+            class="filter-select"
+          >
+            <option [ngValue]="null">Todos los tipos</option>
+            <option *ngFor="let tipo of tiposPoliza" [ngValue]="tipo.value">
+              {{ tipo.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroEstatus">Estado</label>
+          <select
+            id="filtroEstatus"
+            [(ngModel)]="filtroEstatus"
+            (ngModelChange)="onFiltroEstatusChange($event)"
+            class="filter-select"
+          >
+            <option [ngValue]="null">Todos los estados</option>
+            <option *ngFor="let estado of estadosPoliza" [ngValue]="estado.value">
+              {{ estado.label }}
+            </option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroFechaInicio">Fecha Inicio Desde</label>
+          <app-date-input
+            id="filtroFechaInicio"
+            [(ngModel)]="filtroFechaInicio"
+            placeholder="dd/mm/yyyy"
+          ></app-date-input>
+        </div>
+
+        <div class="filter-group">
+          <label for="filtroFechaFin">Fecha Inicio Hasta</label>
+          <app-date-input
+            id="filtroFechaFin"
+            [(ngModel)]="filtroFechaFin"
+            [minDate]="filtroFechaInicio"
+            placeholder="dd/mm/yyyy"
+          ></app-date-input>
+        </div>
+      </div>
+
+      <div class="filters-actions">
+        <button class="btn btn-primary" (click)="aplicarFiltros()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          <span>Aplicar Filtros</span>
+        </button>
+        <button class="btn btn-secondary" (click)="limpiarFiltros()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+          <span>Limpiar</span>
+        </button>
+        <button class="btn btn-secondary" (click)="loadPolizas()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+          <span>Ver Vigentes</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div class="error-message" *ngIf="errorMessage">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading-container" *ngIf="isLoading">
+    <div class="loading-spinner">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+      </svg>
+    </div>
+    <p>Cargando pólizas...</p>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!isLoading && polizas.length === 0 && !errorMessage">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+      <polyline points="14 2 14 8 20 8"></polyline>
+      <line x1="16" y1="13" x2="8" y2="13"></line>
+      <line x1="16" y1="17" x2="8" y2="17"></line>
+    </svg>
+    <h3>No hay pólizas registradas</h3>
+    <p>Crea tu primera póliza para comenzar</p>
+    <a routerLink="/admin/polizas/crear" class="btn btn-primary">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      <span>Asociar Primera Póliza</span>
+    </a>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container" *ngIf="!isLoading && polizas.length > 0">
+    <table class="polizas-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Cliente</th>
+          <th>Tipo</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Expiración</th>
+          <th>Monto</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let poliza of polizas">
+          <td class="id-cell">#{{ poliza.id }}</td>
+          <td class="cliente-cell">
+            <div class="cliente-info">
+              <strong>{{ getClienteNombre(poliza.idCliente) }}</strong>
+            </div>
+          </td>
+          <td>
+            <span class="tipo-badge tipo-{{ poliza.tipoPoliza }}">
+              {{ getTipoPolizaLabel(poliza.tipoPoliza) }}
+            </span>
+          </td>
+          <td>{{ formatDate(poliza.fechaInicio) }}</td>
+          <td>{{ formatDate(poliza.fechaFin) }}</td>
+          <td class="monto-cell">{{ formatCurrency(poliza.monto) }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getEstatusClass(poliza.estatus)">
+              {{ getEstatusLabel(poliza.estatus) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

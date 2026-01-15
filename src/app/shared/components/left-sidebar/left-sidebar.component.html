@@ -1,0 +1,159 @@
+<aside class="left-sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-top">
+    <button class="collapse-btn" (click)="toggle.emit()" [attr.aria-label]="isCollapsed ? 'Expandir menú' : 'Colapsar menú'">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <span class="menu-title" *ngIf="!isCollapsed">Menú</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="nav-item" routerLinkActive="active" [routerLink]="isAdmin ? '/admin/dashboard' : '/cliente/dashboard'">
+      <span class="icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </span>
+      <span class="label" *ngIf="!isCollapsed">Inicio</span>
+    </a>
+
+    <ng-container *ngIf="isAdmin; else clientMenu">
+      <!-- Clientes con submenú -->
+      <div class="nav-group">
+        <div class="nav-item" 
+           [class.active]="clientesExpanded || isRouteActive('/admin/clientes')"
+           (click)="toggleClientes()">
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </span>
+          <span class="label" *ngIf="!isCollapsed">Clientes</span>
+          <svg *ngIf="!isCollapsed" 
+               class="chevron" 
+               [class.expanded]="clientesExpanded"
+               width="16" 
+               height="16" 
+               viewBox="0 0 24 24" 
+               fill="none" 
+               stroke="currentColor" 
+               stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="submenu" *ngIf="clientesExpanded && !isCollapsed">
+          <a class="submenu-item" 
+             routerLinkActive="active" 
+             routerLink="/admin/clientes">
+            <span class="submenu-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </span>
+            <span>Lista de Clientes</span>
+          </a>
+          <a class="submenu-item" 
+             routerLinkActive="active" 
+             routerLink="/admin/clientes/registrar">
+            <span class="submenu-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+            <span>Registrar Cliente</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Pólizas con submenú -->
+      <div class="nav-group">
+        <div class="nav-item" 
+           [class.active]="polizasExpanded || isRouteActive('/admin/polizas')"
+           (click)="togglePolizas()">
+          <span class="icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </span>
+          <span class="label" *ngIf="!isCollapsed">Pólizas</span>
+          <svg *ngIf="!isCollapsed" 
+               class="chevron" 
+               [class.expanded]="polizasExpanded"
+               width="16" 
+               height="16" 
+               viewBox="0 0 24 24" 
+               fill="none" 
+               stroke="currentColor" 
+               stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </div>
+        <div class="submenu" *ngIf="polizasExpanded && !isCollapsed">
+          <a class="submenu-item" 
+             routerLinkActive="active" 
+             routerLink="/admin/polizas">
+            <span class="submenu-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+            </span>
+            <span>Lista de Pólizas</span>
+          </a>
+          <a class="submenu-item" 
+             routerLinkActive="active" 
+             routerLink="/admin/polizas/crear">
+            <span class="submenu-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+            <span>Asociar Póliza</span>
+          </a>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #clientMenu>
+      <a class="nav-item" routerLinkActive="active" routerLink="/cliente/mis-polizas">
+        <span class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+        </span>
+        <span class="label" *ngIf="!isCollapsed">Mis Pólizas</span>
+      </a>
+
+      <a class="nav-item" routerLinkActive="active" routerLink="/cliente/perfil">
+        <span class="icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </span>
+        <span class="label" *ngIf="!isCollapsed">Mi Perfil</span>
+      </a>
+    </ng-template>
+  </nav>
+</aside>
+

@@ -1,0 +1,431 @@
+// Paleta de colores Zurich
+$zurich-blue: #003366;
+$zurich-blue-light: #004d99;
+$zurich-blue-dark: #001f3f;
+$zurich-white: #ffffff;
+$zurich-gray: #f5f7fa;
+$zurich-gray-dark: #6b7280;
+$zurich-gray-light: #e5e7eb;
+$zurich-success: #10b981;
+$zurich-error: #ef4444;
+$zurich-warning: #f59e0b;
+
+.polizas-container {
+  padding: 32px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-section {
+  margin-bottom: 32px;
+
+  .header-content {
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      color: $zurich-blue-dark;
+      margin: 0 0 8px 0;
+    }
+
+    p {
+      font-size: 15px;
+      color: $zurich-gray-dark;
+      margin: 0;
+    }
+  }
+}
+
+.error-message {
+  padding: 16px 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 12px;
+  color: $zurich-error;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+
+  .loading-spinner {
+    color: $zurich-blue;
+    margin-bottom: 16px;
+
+    svg {
+      animation: spin 1s linear infinite;
+    }
+  }
+
+  p {
+    color: $zurich-gray-dark;
+    font-size: 15px;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: $zurich-white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.08);
+
+  svg {
+    color: $zurich-gray-dark;
+    margin-bottom: 24px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $zurich-blue-dark;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 15px;
+    color: $zurich-gray-dark;
+    margin: 0;
+  }
+}
+
+.table-container {
+  background: $zurich-white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.08);
+  overflow: hidden;
+}
+
+.polizas-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead {
+    background: linear-gradient(135deg, $zurich-blue 0%, $zurich-blue-light 100%);
+    color: $zurich-white;
+
+    th {
+      padding: 16px 20px;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $zurich-gray-light;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: rgba(0, 51, 102, 0.02);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: 16px 20px;
+        font-size: 14px;
+        color: $zurich-blue-dark;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.id-cell {
+  font-weight: 700;
+  color: $zurich-blue;
+  font-size: 13px;
+}
+
+.tipo-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.tipo-1 {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+  }
+
+  &.tipo-2 {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+  }
+
+  &.tipo-3 {
+    background: rgba(16, 185, 129, 0.1);
+    color: $zurich-success;
+  }
+
+  &.tipo-4 {
+    background: rgba(245, 158, 11, 0.1);
+    color: $zurich-warning;
+  }
+}
+
+.monto-cell {
+  font-weight: 600;
+  color: $zurich-blue-dark;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.status-active {
+    background: rgba(16, 185, 129, 0.1);
+    color: $zurich-success;
+  }
+
+  &.status-cancelled {
+    background: rgba(239, 68, 68, 0.1);
+    color: $zurich-error;
+  }
+}
+
+.actions-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  .no-action {
+    font-size: 12px;
+    color: $zurich-gray-dark;
+    font-style: italic;
+  }
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &.cancel-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: $zurich-error;
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.2);
+      transform: translateY(-1px);
+    }
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Modal de Confirmación
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(4px);
+}
+
+.confirm-modal {
+  background: $zurich-white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 51, 102, 0.3);
+  max-width: 450px;
+  width: 100%;
+  overflow: hidden;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.confirm-header {
+  padding: 32px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+
+  .confirm-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.warning {
+      background: rgba(245, 158, 11, 0.1);
+      color: $zurich-warning;
+    }
+  }
+
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $zurich-blue-dark;
+    margin: 0;
+  }
+}
+
+.confirm-body {
+  padding: 24px 32px;
+
+  p {
+    font-size: 15px;
+    color: $zurich-gray-dark;
+    margin: 0 0 12px 0;
+    line-height: 1.6;
+
+    strong {
+      color: $zurich-blue-dark;
+      font-weight: 700;
+    }
+  }
+
+  .warning-text {
+    color: $zurich-error;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+}
+
+.confirm-actions {
+  padding: 20px 32px 32px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &.btn-secondary {
+    background: $zurich-gray;
+    color: $zurich-blue-dark;
+
+    &:hover:not(:disabled) {
+      background: $zurich-gray-light;
+    }
+  }
+
+  &.btn-danger {
+    background: linear-gradient(135deg, $zurich-error 0%, #dc2626 100%);
+    color: $zurich-white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+    }
+  }
+
+  .loading-spinner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+      animation: spin 1s linear infinite;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .polizas-container {
+    padding: 24px 16px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .polizas-table {
+    min-width: 800px;
+  }
+}

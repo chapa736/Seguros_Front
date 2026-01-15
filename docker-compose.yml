@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  seguros-front:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: seguros-frontend
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    networks:
+      - seguros-network
+
+networks:
+  seguros-network:
+    driver: bridge

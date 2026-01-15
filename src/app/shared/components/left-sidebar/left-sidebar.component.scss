@@ -1,0 +1,215 @@
+// Paleta Zurich
+$zurich-blue: #003366;
+$zurich-blue-light: #004d99;
+$zurich-blue-dark: #001f3f;
+$zurich-white: #ffffff;
+$zurich-gray: #f5f7fa;
+$zurich-gray-dark: #6b7280;
+
+.left-sidebar {
+  position: sticky;
+  top: 70px; // debajo del navbar
+  height: calc(100vh - 70px);
+  width: 260px;
+  background: linear-gradient(180deg, $zurich-blue 0%, $zurich-blue-dark 100%);
+  color: $zurich-white;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 4px 0 18px rgba(0, 31, 63, 0.18);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.25s ease;
+  overflow: hidden;
+
+  &.collapsed {
+    width: 80px;
+  }
+}
+
+.sidebar-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.collapse-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  color: $zurich-white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+  }
+}
+
+.menu-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+.sidebar-nav {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+
+  .icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    flex-shrink: 0;
+  }
+
+  .label {
+    font-weight: 600;
+    font-size: 15px;
+    flex: 1;
+  }
+
+  .chevron {
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    opacity: 0.7;
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.10);
+    transform: translateX(2px);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.14);
+    .icon {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.20);
+    }
+  }
+}
+
+.submenu {
+  margin-left: 56px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  padding-left: 8px;
+  border-left: 2px solid rgba(255, 255, 255, 0.15);
+  animation: slideDown 0.3s ease;
+  overflow: hidden;
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  margin-bottom: 4px;
+
+  .submenu-icon {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.95);
+    transform: translateX(4px);
+  }
+
+  &.active {
+    background: rgba(255, 255, 255, 0.12);
+    color: $zurich-white;
+    font-weight: 600;
+
+    .submenu-icon {
+      background: rgba(255, 255, 255, 0.15);
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .left-sidebar {
+    width: 220px;
+    &.collapsed {
+      width: 72px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .left-sidebar {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    transform: translateX(-100%);
+    width: 260px;
+    z-index: 1100;
+    transition: transform 0.25s ease;
+
+    &.collapsed {
+      width: 260px;
+    }
+  }
+}
+

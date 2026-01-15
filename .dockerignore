@@ -1,0 +1,35 @@
+# Dependencias
+node_modules
+npm-debug.log
+
+# Archivos de construcción
+dist
+.angular
+
+# Archivos de desarrollo
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de Git
+.git
+.gitignore
+
+# Archivos de Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Archivos de documentación
+README.md
+*.md
+
+# Archivos de entorno (si los hay)
+.env
+.env.local

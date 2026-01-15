@@ -1,0 +1,241 @@
+// Paleta de colores Zurich
+$zurich-blue: #003366;
+$zurich-blue-light: #004d99;
+$zurich-blue-dark: #001f3f;
+$zurich-white: #ffffff;
+$zurich-gray: #f5f7fa;
+$zurich-gray-dark: #6b7280;
+$zurich-gray-light: #e5e7eb;
+$zurich-success: #10b981;
+$zurich-error: #ef4444;
+$zurich-warning: #f59e0b;
+
+.dashboard-container {
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+  padding: 32px 24px;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: $zurich-blue-dark;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    font-size: 16px;
+    color: $zurich-gray-dark;
+    margin: 0;
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.stat-card {
+  background: $zurich-white;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(0, 51, 102, 0.08);
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 51, 102, 0.12);
+    border-color: rgba(0, 51, 102, 0.1);
+  }
+
+  .stat-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    &.clients {
+      background: rgba(0, 51, 102, 0.1);
+      color: $zurich-blue;
+    }
+
+    &.policies {
+      background: rgba(16, 185, 129, 0.1);
+      color: $zurich-success;
+    }
+
+    &.active {
+      background: rgba(16, 185, 129, 0.1);
+      color: $zurich-success;
+    }
+
+    &.cancelled {
+      background: rgba(239, 68, 68, 0.1);
+      color: $zurich-error;
+    }
+  }
+
+  .stat-content {
+    flex: 1;
+
+    h3 {
+      font-size: 32px;
+      font-weight: 700;
+      color: $zurich-blue-dark;
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      font-size: 14px;
+      color: $zurich-gray-dark;
+      margin: 0;
+    }
+  }
+}
+
+.welcome-section {
+  margin-bottom: 48px;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, $zurich-blue 0%, $zurich-blue-light 100%);
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  box-shadow: 0 8px 24px rgba(0, 51, 102, 0.2);
+  color: $zurich-white;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  .welcome-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .welcome-content {
+    flex: 1;
+    z-index: 1;
+
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      color: $zurich-white;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.95);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 24px 16px;
+  }
+
+  .dashboard-header {
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 20px;
+
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .stat-content h3 {
+      font-size: 24px;
+    }
+  }
+
+  .welcome-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 24px;
+
+    .welcome-icon {
+      width: 64px;
+      height: 64px;
+    }
+
+    .welcome-content h2 {
+      font-size: 24px;
+    }
+
+    .welcome-content p {
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 16px 12px;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

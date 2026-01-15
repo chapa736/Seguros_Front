@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+
+<div class="shell">
+  <app-left-sidebar
+    [isAdmin]="isAdmin"
+    [isCollapsed]="isSidebarCollapsed"
+    (toggle)="toggleSidebar()"
+  ></app-left-sidebar>
+
+  <main class="shell-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+

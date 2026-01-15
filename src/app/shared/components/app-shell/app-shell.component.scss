@@ -1,0 +1,13 @@
+$zurich-gray: #f5f7fa;
+
+.shell {
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(135deg, #f0f4f8 0%, #e6edf5 100%);
+}
+
+.shell-content {
+  flex: 1;
+  min-width: 0;
+}
+

@@ -1,0 +1,278 @@
+<div class="form-container">
+  <div class="form-header">
+    <h1>Crear Nueva Póliza</h1>
+    <p>Completa todos los campos para crear una nueva póliza y asociarla a un cliente</p>
+  </div>
+
+  <form [formGroup]="polizaForm" (ngSubmit)="onSubmit()" class="poliza-form">
+    <!-- Cliente -->
+    <div class="form-group">
+      <label for="cliente" class="form-label">
+        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="9" cy="7" r="4"></circle>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+        </svg>
+        Cliente
+        <span class="required">*</span>
+      </label>
+      
+      <div class="cliente-selector">
+        <div class="search-input-wrapper">
+          <input
+            type="text"
+            class="form-input search-input"
+            [formControl]="searchClienteControl"
+            (input)="filterClientes()"
+            placeholder="Buscar cliente por nombre, identificación o email..."
+            [value]="getDisplayValue()"
+          />
+          <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
+          </svg>
+          <button
+            type="button"
+            class="clear-btn"
+            *ngIf="idCliente?.value"
+            (click)="clearClienteSelection()"
+            title="Limpiar selección"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="clientes-dropdown" *ngIf="clientesFiltrados.length > 0 && !idCliente?.value">
+          <div
+            class="cliente-option"
+            *ngFor="let cliente of clientesFiltrados"
+            (click)="selectCliente(cliente)"
+          >
+            <div class="cliente-info">
+              <strong>{{ cliente.nombreCompleto }}</strong>
+              <span class="cliente-details">
+                ID: {{ cliente.numeroIdentificacion }} | {{ cliente.email }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="no-results" *ngIf="clientesFiltrados.length === 0 && searchClienteControl.value && !isLoadingClientes">
+          No se encontraron clientes
+        </div>
+
+        <div class="loading-indicator" *ngIf="isLoadingClientes">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Cargando clientes...
+        </div>
+      </div>
+
+      <input type="hidden" formControlName="idCliente" />
+      
+      <span class="error-message" *ngIf="idCliente?.hasError('required') && idCliente?.touched">
+        Debes seleccionar un cliente
+      </span>
+    </div>
+
+    <!-- Tipo de Póliza -->
+    <div class="form-group">
+      <label for="tipoPoliza" class="form-label">
+        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+        </svg>
+        Tipo de Póliza
+        <span class="required">*</span>
+      </label>
+      <select
+        id="tipoPoliza"
+        formControlName="tipoPoliza"
+        class="form-input form-select"
+        [class.error]="tipoPoliza?.invalid && tipoPoliza?.touched"
+      >
+        <option value="">Selecciona un tipo</option>
+        <option *ngFor="let tipo of tiposPoliza" [value]="tipo.value">
+          {{ tipo.label }}
+        </option>
+      </select>
+      <span class="error-message" *ngIf="tipoPoliza?.hasError('required') && tipoPoliza?.touched">
+        El tipo de póliza es obligatorio
+      </span>
+    </div>
+
+    <!-- Fechas -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="fechaInicio" class="form-label">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Fecha de Inicio
+          <span class="required">*</span>
+        </label>
+        <app-date-input
+          id="fechaInicio"
+          formControlName="fechaInicio"
+          [minDate]="minDate"
+          placeholder="dd/mm/yyyy"
+          [required]="true"
+        ></app-date-input>
+        <span class="error-message" *ngIf="fechaInicio?.hasError('required') && fechaInicio?.touched">
+          La fecha de inicio es obligatoria
+        </span>
+        <span class="error-message" *ngIf="fechaInicio?.hasError('fechaPasada') && fechaInicio?.touched">
+          La fecha de inicio no puede ser anterior a hoy
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaFin" class="form-label">
+          <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          Fecha de Expiración
+          <span class="required">*</span>
+        </label>
+        <app-date-input
+          id="fechaFin"
+          formControlName="fechaFin"
+          [minDate]="getMinDateFin()"
+          placeholder="dd/mm/yyyy"
+          [required]="true"
+        ></app-date-input>
+        <span class="error-message" *ngIf="fechaFin?.hasError('required') && fechaFin?.touched">
+          La fecha de expiración es obligatoria
+        </span>
+        <span class="error-message" *ngIf="fechaFin?.hasError('fechaFinInvalida') && fechaFin?.touched">
+          La fecha de expiración debe ser posterior a la fecha de inicio
+        </span>
+      </div>
+    </div>
+
+    <!-- Monto Asegurado -->
+    <div class="form-group">
+      <label for="monto" class="form-label">
+        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        Monto Asegurado
+        <span class="required">*</span>
+      </label>
+      <div class="monto-input-wrapper">
+        <span class="currency-symbol">$</span>
+        <input
+          type="number"
+          id="monto"
+          formControlName="monto"
+          class="form-input monto-input"
+          [class.error]="monto?.invalid && monto?.touched"
+          placeholder="0.00"
+          step="0.01"
+          min="0.01"
+        />
+      </div>
+      <span class="error-message" *ngIf="monto?.hasError('required') && monto?.touched">
+        El monto asegurado es obligatorio
+      </span>
+      <span class="error-message" *ngIf="monto?.hasError('min') && monto?.touched">
+        El monto debe ser mayor a 0
+      </span>
+      <span class="error-message" *ngIf="monto?.hasError('pattern') && monto?.touched">
+        Ingresa un monto válido (máximo 2 decimales)
+      </span>
+    </div>
+
+    <!-- Estado (solo lectura, siempre Activa) -->
+    <div class="form-group">
+      <label for="estatus" class="form-label">
+        <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        Estado de la Póliza
+      </label>
+      <select
+        id="estatus"
+        formControlName="estatus"
+        class="form-input form-select"
+        [disabled]="true"
+      >
+        <option [value]="1">Activa</option>
+      </select>
+    </div>
+
+    <!-- Error general -->
+    <div class="error-message-server" *ngIf="errorMessage">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Botones -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        routerLink="/admin/polizas"
+        [disabled]="isSubmitting"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="isSubmitting || polizaForm.invalid"
+        [class.loading]="isSubmitting"
+      >
+        <span *ngIf="!isSubmitting">Crear Póliza</span>
+        <span *ngIf="isSubmitting" class="loading-spinner">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+          </svg>
+          Creando...
+        </span>
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Alerta de éxito -->
+<div class="success-alert-overlay" *ngIf="showSuccessAlert" (click)="closeSuccessAlert()">
+  <div class="success-alert" (click)="$event.stopPropagation()">
+    <div class="success-alert-header">
+      <div class="success-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2>¡Póliza Creada Exitosamente!</h2>
+    </div>
+    
+    <div class="success-alert-body">
+      <p class="success-message">
+        La póliza ha sido creada y asociada al cliente correctamente.
+      </p>
+    </div>
+    
+    <div class="success-alert-footer">
+      <button class="btn btn-primary" (click)="closeSuccessAlert()">
+        Entendido
+      </button>
+    </div>
+  </div>
+</div>
