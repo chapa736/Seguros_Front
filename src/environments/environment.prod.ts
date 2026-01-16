@@ -5,8 +5,8 @@ export const environment = {
   // Por eso usamos localhost o la IP del servidor, NO los nombres de contenedores.
   
   // Para desarrollo local o cuando todo está en la misma máquina:
-  authApiUrl: 'http://localhost:5001/api',      // Contenedor: auth-api (puerto 5001:80)
-  segurosApiUrl: 'http://localhost:5002/api',   // Contenedor: seguros-api (puerto 5002:80)
+  authApiUrl: 'https://auth-api-hscra6bsgahsepdb.westus2-01.azurewebsites.net/api',
+  segurosApiUrl: 'https://seguros-api-allr-hycycshxhsgah8eq.westus2-01.azurewebsites.net/api', 
   
   
 };
